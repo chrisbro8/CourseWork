@@ -1,0 +1,34 @@
+close all;
+clear all;
+
+firstImage=imread('Robot.tif');
+Oimag=imread('Oimage.bmp');
+figure;
+subplot(3,3,1)
+imshow(firstImage),title('Original Image');
+
+
+% first Conversion try
+%multiply the spliced colors
+
+% it already in grayscale Just saving that...
+grayImage=rgb2gray(Oimag);
+subplot(3,3,2)
+imshow(firstImage),title('Binary Image');
+BinaryImage=imbinarize(grayImage);
+
+
+
+
+%The structured Element Conversion
+SE1=R*Oimag(:,:,1)+G*Oimag(:,:,2)+B*Oimag(:,:,3);
+SE=imbinarize(SE1)
+%hit and miss methos
+Image_Erode=imerode(BinaryImage,SE)
+figure,imshow(Image_Erode);
+Image_Erode2=imerode(not(BinaryImage),not(SE));
+figure, imshow(Image_Erode2);
+HM=Image_Erode&Image_Erode2;
+figure, imshow(HM);
+
+getCoordinates(HM)% using my function
